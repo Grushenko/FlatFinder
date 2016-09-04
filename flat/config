@@ -1,7 +1,15 @@
 [general]
-last=cosik
+url=http://www.gumtree.pl/s-mieszkania-i-domy-do-wynajecia/warszawa/v1c9008l3200008p1
+offers=//div[@class="view"]//a[@class="href-link"]/@href
 
 [smtp]
-#to=kamilawinnicka@gmail.com 
+to=kamilawinnicka@gmail.com 
 from=kd305513@gmail.com
-to=kd305513@gmail.com 
+#to=kd305513@gmail.com 
+
+[rule1]
+xpath=//div[@class="vip-details"]//a[position()=1]/text()
+word=wola
+
+[word]
+a=c
