@@ -2,7 +2,8 @@
 import os
 import sys
 import wsgi
-#import finder
+import finder
+import threading
 from cherrypy import wsgiserver
 
 sys.path.insert(0, os.path.dirname(__file__))
@@ -17,6 +18,10 @@ except IOError:
 ip = os.environ['OPENSHIFT_PYTHON_IP']
 port = int(os.environ['OPENSHIFT_PYTHON_PORT'])
 host_name = os.environ['OPENSHIFT_GEAR_DNS']
+
+t = threading.Thread(target=finder.Finder('config').run)
+t.daemon = True
+t.start()
 
 server = wsgiserver.CherryPyWSGIServer((ip, port), wsgi.application, server_name=host_name)
 server.start()
