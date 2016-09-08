@@ -179,7 +179,7 @@ class Finder(object):
                     print "\t[FOUND] Found offer!"
                     self.add_to_log(full_url)
                     content += full_url + '\n\n'
-            #self.send_email(content)
+            self.send_email(content)
             print 'sleep'
             time.sleep(10)
             print 'wake'
