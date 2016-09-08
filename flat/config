@@ -3,10 +3,13 @@ url=http://www.gumtree.pl/s-mieszkania-i-domy-do-wynajecia/warszawa/v1c9008l3200
 offers=//div[@class="view"]//a[@class="href-link"]/@href
 
 [smtp]
-to=kamilawinnicka@gmail.com 
-from=kd305513@gmail.com
-#to=kd305513@gmail.com 
+to=wojciech@gruszka.eu
+#to=kamilawinnicka@gmail.com
+#to=kd305513@gmail.com
+from=wojciechgruszka@gmx.com
+
 
 [rule1]
 xpath=//div[@class="vip-details"]//a[position()=1]/text()
 word=wola
+
