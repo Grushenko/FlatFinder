@@ -142,8 +142,9 @@ class Finder(object):
                 for rule in self.rules:
                     if not rule.check(tree):
                         acc = False
-                        # break
+                        break
                 if acc:
+                    print "\t[FOUND] Found offer!"
                     content += full_url + '\n\n'
             self.send_email(content)
             time.sleep(60)

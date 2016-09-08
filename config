@@ -27,5 +27,5 @@ word=3,4
 #Price
 [rule3]
 xpath=//div[@class="price"]//span[@class="amount"]/text()
-lower=1000
-upper=10000
+lower=0
+upper=6000
