@@ -29,7 +29,11 @@ t = threading.Thread(target=finder.Finder(os.environ['OPENSHIFT_DATA_DIR'], os.e
 t.daemon = True
 t.start()
 
-wsgiapp = cherrypy.Application(FlatFinder(), '/')
 
+wsgiapp = cherrypy.Application(FlatFinder, '/')
 server = wsgiserver.CherryPyWSGIServer((ip, port), wsgiapp, server_name=host_name)
 server.start()
+
+#cherrypy.server.socket_host = ip
+#cherrypy.server.socket_port = port
+#cherrypy.quickstart(FlatFinder())
