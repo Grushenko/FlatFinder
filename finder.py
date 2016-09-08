@@ -90,7 +90,7 @@ class Finder(object):
         self.url = conf.get('general', 'url')
         self.offers = conf.get('general', 'offers')
         self.sender = conf.get('smtp', 'from')
-        self.rec = conf.get('smtp', 'to')
+        self.rec = conf.get('smtp', 'to').split(',')
         if conf.has_option('smtp', 'mx_user'):
             self.mx_user = conf.get('smtp', 'mx_user')
         else:
@@ -120,21 +120,23 @@ class Finder(object):
     def send_email(self, content):
         if not content:
             return
-        message = "From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n%s\nFlatFinder by Wojciech Gruszka & Krystian Dowolski" % \
-                  (self.sender, self.rec, self.subject, content)
-        print "[MESSAGE] \n" + message
-        try:
-            server = smtplib.SMTP('mail.gmx.com', 587)
-            server.ehlo()
-            server.starttls()
-            server.login(self.mx_user, self.mx_passwd)
-            server.sendmail(self.sender, self.rec, message)
-            server.quit()
-            print "[OK] Message sent"
-        except:
-            print "Could not send message!"
-            traceback.print_exc()
-            pass
+
+        for rec in self.rec:
+            message = "From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n%s\nFlatFinder by Wojciech Gruszka & Krystian Dowolski" % \
+                      (self.sender, rec, self.subject, content)
+            print "[MESSAGE] \n" + message
+            try:
+                server = smtplib.SMTP('mail.gmx.com', 587)
+                server.ehlo()
+                server.starttls()
+                server.login(self.mx_user, self.mx_passwd)
+                server.sendmail(self.sender, rec, message)
+                server.quit()
+                print "[OK] Message sent"
+            except:
+                print "Could not send message!"
+                traceback.print_exc()
+                pass
 
     def add_to_log(self, url):
         with open(self.data_dir + 'found.txt', 'a') as log:
@@ -150,14 +152,18 @@ class Finder(object):
             self.tree = etree.parse(urllib2.urlopen(self.url), HTML_parser)
             hrefs = self.tree.xpath(self.offers)
             content = ''
+            idx = -1
             for href in hrefs:
+                idx += 1
+
                 full_url = self.domain + href
+
                 if full_url in self.processed:
                     continue
 
-                self.processed.append(full_url)
-                if len(self.processed) > 20:
-                    self.processed.pop(0)
+                self.processed.insert(idx, full_url)
+                if len(self.processed) >= 100:
+                    self.processed.pop()
                 try:
                     tree = etree.parse(urllib2.urlopen(full_url), HTML_parser)
                 except urllib2.HTTPError:
@@ -173,8 +179,9 @@ class Finder(object):
                     print "\t[FOUND] Found offer!"
                     self.add_to_log(full_url)
                     content += full_url + '\n\n'
-            self.send_email(content)
-            time.sleep(60)
+            #self.send_email(content)
+            print 'sleep'
+            time.sleep(10)
             print 'wake'
 
 
