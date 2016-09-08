@@ -117,7 +117,12 @@ class Finder(object):
             traceback.print_exc()
             pass
 
-    def run(self):
+    def run(self, mx_user=None, mx_password=None):
+
+        if mx_user:
+            self.mx_user = mx_user
+        if mx_password:
+            self.mx_passwd = mx_password
 
         # self.send_email("""
         # FlatFinder 0.1.0 init.

@@ -19,7 +19,7 @@ ip = os.environ['OPENSHIFT_PYTHON_IP']
 port = int(os.environ['OPENSHIFT_PYTHON_PORT'])
 host_name = os.environ['OPENSHIFT_GEAR_DNS']
 
-t = threading.Thread(target=finder.Finder('config').run)
+t = threading.Thread(target=finder.Finder('config').run, args=(os.environ['MX_USER'], os.environ['MX_PASSWORD']))
 t.daemon = True
 t.start()
 
