@@ -8,5 +8,9 @@ def wsgi(environ, start_response):
         with open(os.environ['OPENSHIFT_DATA_DIR']+'found.txt', 'r') as html:
             found = html.read()
         found = found.split('\n')
-        return tmpl.render(found=found)
-
+        response_body = tmpl.render(found=found)
+        status = '200 OK'
+        ctype = 'text/plain'
+        response_headers = [('Content-Type', ctype), ('Content-Length', str(len(response_body)))]
+        start_response(status, response_headers)
+        return [response_body]
