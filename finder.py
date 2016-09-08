@@ -65,10 +65,16 @@ class NumberRule(Rule):
 
 
 class Finder(object):
-    def __init__(self, cfg):
+    def __init__(self, cfg, mx_user = None, mx_password = None):
         conf = ConfigParser.RawConfigParser()
         conf.readfp(codecs.open(cfg, "r", "utf8"))
         self.from_config(conf)
+
+        if mx_user:
+            self.mx_user = mx_user
+        if mx_password:
+            self.mx_passwd = mx_user
+
         self.domain = '{uri.scheme}://{uri.netloc}'.format(uri=urlparse(self.url))
         self.tree = etree.parse(urllib2.urlopen(self.url), HTML_parser)
         self.processed = []
@@ -79,8 +85,11 @@ class Finder(object):
         self.offers = conf.get('general', 'offers')
         self.sender = conf.get('smtp', 'from')
         self.rec = conf.get('smtp', 'to')
-        self.mx_user = conf.get('smtp', 'mx_user')
-        self.mx_passwd = conf.get('smtp', 'mx_password')
+        if conf.has_option('smtp', 'mx_user'):
+            self.mx_user = conf.get('smtp', 'mx_user')
+        if conf.has_option('smtp', 'mx_password'):
+            self.mx_passwd = conf.get('smtp', 'mx_password')
+
         self.parse_rules(conf)
 
     def parse_rules(self, conf):
