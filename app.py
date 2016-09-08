@@ -22,7 +22,7 @@ port = int(os.environ['OPENSHIFT_PYTHON_PORT'])
 host_name = os.environ['OPENSHIFT_GEAR_DNS']
 
 
-t = threading.Thread(target=finder.Finder(os.environ['OPENSHIFT_DATA_DIR']+'/', os.environ['MX_USER'], os.environ['MX_PASSWORD']).run)
+t = threading.Thread(target=finder.Finder(os.environ['OPENSHIFT_DATA_DIR'], os.environ['MX_USER'], os.environ['MX_PASSWORD']).run)
 t.daemon = True
 t.start()
 
