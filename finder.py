@@ -65,15 +65,21 @@ class NumberRule(Rule):
 
 
 class Finder(object):
-    def __init__(self, cfg, mx_user = None, mx_password = None):
+    def __init__(self, data_dir, mx_user=None, mx_password=None):
+        self.data_dir = data_dir
+
         conf = ConfigParser.RawConfigParser()
-        conf.readfp(codecs.open(cfg, "r", "utf8"))
+        conf.readfp(codecs.open(self.data_dir + 'config', "r", "utf8"))
+
         self.from_config(conf)
 
         if mx_user:
             self.mx_user = mx_user
         if mx_password:
             self.mx_passwd = mx_user
+
+        if not self.mx_user or not self.mx_passwd:
+            raise Exception("No credentials")
 
         self.domain = '{uri.scheme}://{uri.netloc}'.format(uri=urlparse(self.url))
         self.tree = etree.parse(urllib2.urlopen(self.url), HTML_parser)
@@ -126,6 +132,10 @@ class Finder(object):
             traceback.print_exc()
             pass
 
+    def add_to_log(self, url):
+        with open(self.data_dir + 'found.txt', 'a') as log:
+            log.write(url + '\n')
+
     def run(self):
 
         # self.send_email("""
@@ -140,7 +150,10 @@ class Finder(object):
                 full_url = self.domain + href
                 if full_url in self.processed:
                     continue
+
                 self.processed.append(full_url)
+                if len(self.processed) > 20:
+                    self.processed.pop(0)
                 try:
                     tree = etree.parse(urllib2.urlopen(full_url), HTML_parser)
                 except urllib2.HTTPError:
@@ -154,10 +167,11 @@ class Finder(object):
                         break
                 if acc:
                     print "\t[FOUND] Found offer!"
+                    self.add_to_log(full_url)
                     content += full_url + '\n\n'
             self.send_email(content)
             time.sleep(60)
-
+            print 'wake'
 
 if __name__ == "__main__":
-    Finder('config').run()
+    Finder('./').run()
