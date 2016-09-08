@@ -1,8 +1,11 @@
 #!/usr/bin/python
 import os
+import sys
 import wsgi
 import finder
 from cherrypy import wsgiserver
+
+sys.path.insert(0, os.path.dirname(__file__))
 
 virtenv = os.environ['OPENSHIFT_PYTHON_DIR'] + '/virtenv/'
 virtualenv = os.path.join(virtenv, 'bin/activate_this.py')
