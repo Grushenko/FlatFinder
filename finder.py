@@ -76,7 +76,7 @@ class Finder(object):
         if mx_user:
             self.mx_user = mx_user
         if mx_password:
-            self.mx_passwd = mx_user
+            self.mx_passwd = mx_password
 
         if not self.mx_user or not self.mx_passwd:
             raise Exception("No credentials")
