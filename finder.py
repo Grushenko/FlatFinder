@@ -93,8 +93,12 @@ class Finder(object):
         self.rec = conf.get('smtp', 'to')
         if conf.has_option('smtp', 'mx_user'):
             self.mx_user = conf.get('smtp', 'mx_user')
+        else:
+            self.mx_user = None
         if conf.has_option('smtp', 'mx_password'):
             self.mx_passwd = conf.get('smtp', 'mx_password')
+        else:
+            self.mx_passwd = None
 
         self.parse_rules(conf)
 
@@ -137,13 +141,13 @@ class Finder(object):
             log.write(url + '\n')
 
     def run(self):
-
         # self.send_email("""
         # FlatFinder 0.1.0 init.
         # (c) 2016 Wojciech Gruszka
         # """)
 
         while True:
+            self.tree = etree.parse(urllib2.urlopen(self.url), HTML_parser)
             hrefs = self.tree.xpath(self.offers)
             content = ''
             for href in hrefs:
@@ -172,6 +176,7 @@ class Finder(object):
             self.send_email(content)
             time.sleep(60)
             print 'wake'
+
 
 if __name__ == "__main__":
     Finder('./').run()
