@@ -2,6 +2,8 @@
 import os
 import sys
 
+import cherrypy
+
 reload(sys)
 sys.setdefaultencoding('utf-8')
 import FlatFinder
@@ -27,5 +29,7 @@ t = threading.Thread(target=finder.Finder(os.environ['OPENSHIFT_DATA_DIR'], os.e
 t.daemon = True
 t.start()
 
-server = wsgiserver.CherryPyWSGIServer((ip, port), FlatFinder(), server_name=host_name)
+wsgiapp = cherrypy.Application(FlatFinder(), '/')
+
+server = wsgiserver.CherryPyWSGIServer((ip, port), wsgiapp, server_name=host_name)
 server.start()

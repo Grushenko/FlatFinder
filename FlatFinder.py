@@ -2,7 +2,8 @@ import os
 import cherrypy
 from jinja import Environment, FileSystemLoader
 
-class FlatFinder:
+
+class FlatFinder(object):
     def __init__(self):
         self.env = Environment(loader=FileSystemLoader('html'))
 
