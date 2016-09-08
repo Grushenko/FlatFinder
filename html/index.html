@@ -6,6 +6,8 @@
   <title>FlatFinder</title>
 </head>
 <body>
-    {{body}}
+    {% for item in found %}
+    <a href="{{item}}">{{item}}</a>
+    {% endfor %}
 </body>
 </html>
