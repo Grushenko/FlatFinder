@@ -101,7 +101,8 @@ class Finder(object):
     def send_email(self, content):
         if not content:
             return
-        message = "From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n%s" % (self.sender, self.rec, self.subject, content)
+        message = "From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n%s\nFlatFinder by Wojciech Gruszka & Krystian Dowolski" % \
+                  (self.sender, self.rec, self.subject, content)
         print "[MESSAGE] \n" + message
         try:
             server = smtplib.SMTP('mail.gmx.com', 587)
