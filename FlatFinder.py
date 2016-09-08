@@ -1,4 +1,7 @@
-def application(environ, start_response):
+import os
+
+
+def wsgi(environ, start_response):
     ctype = 'text/plain'
     if environ['PATH_INFO'] == '/health':
         response_body = "1"
@@ -8,17 +11,15 @@ def application(environ, start_response):
         response_body = '\n'.join(response_body)
     else:
         ctype = 'text/html'
-        response_body = '''<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>FlatFinder</title>
-</head>
-<body>
-    Hello!
-</body>
-</html>'''
+        response_body = ''
+        found = ''
+        with open('html/index.html', 'r') as html:
+            response_body = html.read()
+        with open(os.environ['OPENSHIFT_DATA_DIR']+'found.txt', 'r') as html:
+            found = html.read()
+
+        response_body.replace('{{body}}', found)
+
     status = '200 OK'
     response_headers = [('Content-Type', ctype), ('Content-Length', str(len(response_body)))]
     #

@@ -3,8 +3,8 @@ url=http://www.gumtree.pl/s-mieszkania-i-domy-do-wynajecia/warszawa/v1c9008l3200
 offers=//div[@class="view"]//a[@class="href-link"]/@href
 
 [smtp]
-to=wojciech@gruszka.eu
-#to=kamilawinnicka@gmail.com,wojciech@gruszka.eu
+#to=wojciech@gruszka.eu
+to=kamilawinnicka@gmail.com,wojciech@gruszka.eu
 #to=kamilawinnicka@gmail.com,wojciech@gruszka.eu,kd305513@gmail.com
 from=wojciechgruszka@gmx.com
 mx_user=wojciechgruszka@gmx.com
@@ -27,4 +27,4 @@ word=3,4
 [rule3]
 xpath=//div[@class="price"]//span[@class="amount"]/text()
 lower=0
-upper=6000
+upper=5000
