@@ -15,10 +15,20 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<ul>
-    {% for item in found %}
-    <li><a href="{{item}}">{{item}}</a></li>
-    {% endfor %}
-</ul>
+
+<h1 class="text-center">Configuration</h1>
+<div class="container-fluid">
+    <form>
+        <div class="form-group">
+            <label for="code">Code</label>
+            <textarea class="form-control" cols="80" rows="20" id="code">{{config}}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" placeholder="Password">
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
 </body>
 </html>

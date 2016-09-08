@@ -27,5 +27,5 @@ t = threading.Thread(target=finder.Finder(os.environ['OPENSHIFT_DATA_DIR'], os.e
 t.daemon = True
 t.start()
 
-server = wsgiserver.CherryPyWSGIServer((ip, port), FlatFinder.wsgi, server_name=host_name)
+server = wsgiserver.CherryPyWSGIServer((ip, port), FlatFinder(), server_name=host_name)
 server.start()

@@ -1,16 +1,24 @@
 import os
+import cherrypy
 from jinja import Environment, FileSystemLoader
-env = Environment(loader=FileSystemLoader('html'))
 
-def wsgi(environ, start_response):
-        tmpl = env.get_template('index.html')
+class FlatFinder:
+    def __init__(self):
+        self.env = Environment(loader=FileSystemLoader('html'))
+
+    @cherrypy.expose
+    def index(self):
+        tmpl = self.env.get_template('index.html')
         found = ''
-        with open(os.environ['OPENSHIFT_DATA_DIR']+'found.txt', 'r') as html:
+        with open(os.environ['OPENSHIFT_DATA_DIR'] + 'found.txt', 'r') as html:
             found = html.read()
         found = found.split('\n')
-        response_body = tmpl.render(found=found)
-        status = '200 OK'
-        ctype = 'text/html; charset=utf-8'
-        response_headers = [('Content-Type', ctype), ('Content-Length', str(len(response_body)))]
-        start_response(status, response_headers)
-        return [response_body]
+        return tmpl.render(found=found)
+
+    @cherrypy.expose
+    def config(self):
+        tmpl = self.env.get_template('config.html')
+        config = ''
+        with open(os.environ['OPENSHIFT_DATA_DIR'] + 'config', 'r') as config:
+            config = config.read()
+        return tmpl.render(config=config)
