@@ -10,6 +10,3 @@ from=kd305513@gmail.com
 [rule1]
 xpath=//div[@class="vip-details"]//a[position()=1]/text()
 word=wola
-
-[word]
-a=c

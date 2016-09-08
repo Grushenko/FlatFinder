@@ -1,6 +1,0 @@
-To: kd305513@gmail.com
-From: kd305513@gmail.com
-Subject: Sent from a terminal!
-
-Your content goes here. Lorem ipsum dolor sit amet, consectetur adipisicing.
-(Notice the blank space between the subject and the body.)
