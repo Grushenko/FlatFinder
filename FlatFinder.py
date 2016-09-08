@@ -10,7 +10,7 @@ def wsgi(environ, start_response):
         found = found.split('\n')
         response_body = tmpl.render(found=found)
         status = '200 OK'
-        ctype = 'text/plain'
+        ctype = 'text/html; charset=utf-8'
         response_headers = [('Content-Type', ctype), ('Content-Length', str(len(response_body)))]
         start_response(status, response_headers)
         return [response_body]
