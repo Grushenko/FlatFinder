@@ -2,7 +2,7 @@
 import os
 import sys
 import wsgi
-import finder
+#import finder
 from cherrypy import wsgiserver
 
 sys.path.insert(0, os.path.dirname(__file__))
