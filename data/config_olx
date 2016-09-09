@@ -9,7 +9,6 @@ to=kamilawinnicka@gmail.com,wojciech@gruszka.eu
 #to=kamilawinnicka@gmail.com,wojciech@gruszka.eu,kd305513@gmail.com
 from=wojciechgruszka@gmx.com
 
-
 #District
 [rule1]
 xpath=//div[@class="offercontentinner"]//span[contains(@class, "show-map-link")]//strong/text()
