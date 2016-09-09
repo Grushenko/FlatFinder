@@ -15,11 +15,13 @@ class FinderThread(object):
         while event.is_set():
             self.finder.process()
             inv = self.finder.interval
+            print 'sleep'
             while inv > 0:
                 if not event.is_set():
                     break
                 inv -= 1
                 time.sleep(1)
+            print 'wake'
 
     def start(self):
         self.thread.start()
