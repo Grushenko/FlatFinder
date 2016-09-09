@@ -14,11 +14,22 @@ class FlatFinder(object):
     def index(self):
         tmpl = self.env.get_template('index.html')
         found = {'olx': [], 'gumtree': []}
-        with open(self.path + 'found_olx.txt', 'r') as html:
-            found['olx'] = html.read().split('\n')
+        try:
+            with open(self.path + 'found_olx.txt', 'r') as html:
+                for row in html.read().split('\n'):
+                    if len(row):
+                        found['olx'].append(row.split('|'))
+        except:
+            pass
 
-        with open(self.path + 'found_gumtree.txt', 'r') as html:
-            found['gumtree'] = html.read().split('\n')
+        try:
+            with open(self.path + 'found_gumtree.txt', 'r') as html:
+                for row in html.read().split('\n'):
+                    if len(row):
+                        found['gumtree'].append(row.split('|'))
+        except:
+            pass
+
         return tmpl.render(found=found)
 
     @cherrypy.expose

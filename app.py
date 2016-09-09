@@ -39,7 +39,7 @@ else:
     host_name = 'localhost'
     data_dir = './data/'
     GumTree = GumTreeFinder.GumTreeFinder(data_dir, 'config_gumtree')
-    OLX = OLXFinder.OLXFinder(data_dir, 'config_olx')
+#    OLX = OLXFinder.OLXFinder(data_dir, 'config_olx')
 
 #OLXThread = FinderThread(OLX)
 GumTreeThread = FinderThread(GumTree)

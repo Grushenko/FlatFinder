@@ -94,8 +94,7 @@ class Finder(object):
         self.xpath_price = conf.get('general', 'xpath_price')
         self.xpath_name = conf.get('general', 'xpath_name')
         self.xpath_district = conf.get('general', 'xpath_district')
-        self.xpath_rooms =  conf.get('general', 'xpath_rooms')
-
+        self.xpath_rooms = conf.get('general', 'xpath_rooms')
 
         self.interval = int(conf.get('general', 'interval'))
         self.sender = conf.get('smtp', 'from')
@@ -190,6 +189,17 @@ class Finder(object):
                 self.add_to_log(full_url, tree)
                 content += full_url + '\n\n'
         self.send_email(content)
+
+    def convert_log(self, file):
+        old_log = ''
+        with codecs.open(self.data_dir + file, 'r', 'utf-8') as old:
+            old_log = old.read()
+        for href in old_log.split('\n'):
+            try:
+                tree = etree.parse(urllib2.urlopen(href), self.HTML_parser)
+                self.add_to_log(href, tree)
+            except:
+                pass
 
     def sleep(self):
         print 'sleep'
