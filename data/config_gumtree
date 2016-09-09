@@ -2,6 +2,10 @@
 url=http://www.gumtree.pl/s-mieszkania-i-domy-do-wynajecia/warszawa/v1c9008l3200008p1
 offers=//div[@class="view"]//a[@class="href-link"]/@href
 interval=60
+xpath_price=//div[@class="price"]//span[@class="amount"]/text()
+xpath_name=//span[@class="myAdTitle"]/text()
+xpath_rooms=//div[@class="vip-details"]//span[@class="name" and text()="Liczba pokoi"]//..//span[position()=2]/text()
+xpath_district=//div[@class="vip-details"]//a[position()=1]/text()
 
 [smtp]
 #to=wojciech@gruszka.eu
@@ -12,9 +16,9 @@ mx_user=wojciechgruszka@gmx.com
 mx_password=asdasd
 
 #District
-[rule1]
-xpath=//div[@class="vip-details"]//a[position()=1]/text()
-word=wola,ochota,włochy
+#[rule1]
+#xpath=//div[@class="vip-details"]//a[position()=1]/text()
+#word=wola,ochota,włochy
 
 #Number of rooms
 # word=k -> kawalerka lub garsoniera
@@ -25,8 +29,8 @@ word=wola,ochota,włochy
 xpath=substring(//div[@class="vip-details"]//span[@class="name" and text()="Liczba pokoi"]//..//span[position()=2]/text(),1,2)
 word=3,4
 
-#Price
-[rule3]
-xpath=//div[@class="price"]//span[@class="amount"]/text()
-lower=0
-upper=6000
+##Price
+#[rule3]
+#xpath=//div[@class="price"]//span[@class="amount"]/text()
+#lower=0
+#upper=6000
