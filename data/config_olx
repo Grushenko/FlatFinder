@@ -27,4 +27,4 @@ word=3,4
 [rule3]
 xpath=//div[contains(@class, 'pricelabel')]//strong/text()
 lower=0
-upper=6000
+upper=2300
