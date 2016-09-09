@@ -9,9 +9,6 @@ import time
 from lxml import etree
 from urlparse import urlparse
 
-HTML_parser = etree.HTMLParser()
-
-
 def to_int(s):
     res = '0'
     for c in s:
@@ -65,11 +62,11 @@ class NumberRule(Rule):
 
 
 class Finder(object):
-    def __init__(self, data_dir, mx_user=None, mx_password=None):
+    def __init__(self, data_dir, config_file, mx_user=None, mx_password=None):
         self.data_dir = data_dir
-
+        self.config_file = config_file
+        self.HTML_parser = etree.HTMLParser()
         self.from_config()
-
         if mx_user:
             self.mx_user = mx_user
         if mx_password:
@@ -79,15 +76,16 @@ class Finder(object):
             raise Exception("No credentials")
 
         self.domain = '{uri.scheme}://{uri.netloc}'.format(uri=urlparse(self.url))
-        self.tree = etree.parse(urllib2.urlopen(self.url), HTML_parser)
+        self.tree = etree.parse(urllib2.urlopen(self.url), self.HTML_parser)
         self.processed = []
-        self.subject = "GumTree Offers: Mieszkania w Warszawie"
+        self.subject = 'Blank subject, something is wrong'
+        self.log_file = 'found.txt'
 
     def from_config(self):
-        print 'Loading config file'
+        print 'Loading %s file' % self.config_file
         conf = ConfigParser.RawConfigParser()
-        conf.readfp(codecs.open(self.data_dir + 'config', "r", "utf8"))
-        print 'path: ' + self.data_dir + 'config'
+        conf.readfp(codecs.open(self.data_dir + self.config_file, "r", "utf8"))
+        print 'path: ' + self.data_dir + self.config_file
         self.url = conf.get('general', 'url')
         self.offers = conf.get('general', 'offers')
         self.interval = int(conf.get('general', 'interval'))
@@ -121,7 +119,6 @@ class Finder(object):
                         lower = int(conf.get(section, 'lower'))
                     self.rules.append(NumberRule(conf.get(section, 'xpath'), lower, upper))
 
-
     def send_email(self, content):
         if not content:
             return
@@ -144,12 +141,13 @@ class Finder(object):
                 pass
 
     def add_to_log(self, url):
-        with open(self.data_dir + 'found.txt', 'a') as log:
+        with open(self.data_dir + self.log_file, 'a') as log:
             log.write(url + '\n')
 
     def process(self):
-        self.tree = etree.parse(urllib2.urlopen(self.url), HTML_parser)
+        self.tree = etree.parse(urllib2.urlopen(self.url), self.HTML_parser)
         hrefs = self.tree.xpath(self.offers)
+        print hrefs
         content = ''
         idx = -1
         for href in hrefs:
@@ -162,7 +160,7 @@ class Finder(object):
                 self.processed.pop()
 
             try:
-                tree = etree.parse(urllib2.urlopen(full_url), HTML_parser)
+                tree = etree.parse(urllib2.urlopen(full_url), self.HTML_parser)
             except urllib2.HTTPError:
                 print "[ERROR] Parsing offer error"
                 continue
@@ -192,6 +190,3 @@ class Finder(object):
         while True:
             self.process()
             self.sleep()
-
-if __name__ == "__main__":
-    Finder('./').run()

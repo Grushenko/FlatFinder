@@ -1,2 +1,6 @@
 *.un~
 .idea
+Finder.pyc
+FinderThread.pyc
+FlatFinder.pyc
+OLXFinder.pyc
