@@ -74,7 +74,7 @@ class Finder(object):
 
         if not self.mx_user or not self.mx_passwd:
             raise Exception("No credentials")
-
+        print self.url
         self.domain = '{uri.scheme}://{uri.netloc}'.format(uri=urlparse(self.url))
         self.tree = etree.parse(urllib2.urlopen(self.url), self.HTML_parser)
         self.processed = []
