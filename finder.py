@@ -181,7 +181,7 @@ class Finder(object):
                     content += full_url + '\n\n'
             self.send_email(content)
             print 'sleep'
-            time.sleep(10)
+            time.sleep(60)
             print 'wake'
 
 

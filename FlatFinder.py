@@ -24,3 +24,11 @@ class FlatFinder(object):
         with open(self.path + 'config', 'r') as config:
             config = config.read()
         return tmpl.render(config=config)
+
+    @cherrypy.expose
+    def save_config(self):
+        tmpl = self.env.get_template('config.html')
+        config = ''
+        with open(self.path + 'config', 'r') as config:
+            config = config.read()
+        return tmpl.render(config=config)
