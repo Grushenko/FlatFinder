@@ -30,7 +30,7 @@ if os.environ.has_key('OPENSHIFT_PYTHON_IP'):
     host_name = os.environ['OPENSHIFT_GEAR_DNS']
     data_dir = os.environ['OPENSHIFT_DATA_DIR']
     GumTree = GumTreeFinder.GumTreeFinder(data_dir, 'config_gumtree', os.environ['MX_USER'], os.environ['MX_PASSWORD'])
-    OLX = OLXFinder.OLXFinder(data_dir, 'config_olx', os.environ['MX_USER'], os.environ['MX_PASSWORD'])
+   # OLX = OLXFinder.OLXFinder(data_dir, 'config_olx', os.environ['MX_USER'], os.environ['MX_PASSWORD'])
 
 
 else:
@@ -41,13 +41,13 @@ else:
     GumTree = GumTreeFinder.GumTreeFinder(data_dir, 'config_gumtree')
     OLX = OLXFinder.OLXFinder(data_dir, 'config_olx')
 
-OLXThread = FinderThread(OLX)
+#OLXThread = FinderThread(OLX)
 GumTreeThread = FinderThread(GumTree)
 
-OLXThread.start()
+#OLXThread.start()
 GumTreeThread.start()
 
-wsgiapp = cherrypy.Application(FlatFinder.FlatFinder(data_dir, {'olx': OLXThread, 'gumtree': GumTreeThread}), '/')
+wsgiapp = cherrypy.Application(FlatFinder.FlatFinder(data_dir, {'olx': None, 'gumtree': GumTreeThread}), '/')
 server = wsgiserver.CherryPyWSGIServer((ip, port), wsgiapp, server_name=host_name)
 server.start()
 
