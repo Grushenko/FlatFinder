@@ -50,9 +50,10 @@ GumTree = GumTreeFinder(data_dir, 'config_gumtree', mx_user, mx_password)
 GumTreeThread = FinderThread(GumTree)
 GumTreeThread.start()
 
-OLX = OLXFinder(data_dir, 'config_olx', mx_user, mx_password)
-OLXThread = FinderThread(OLX)
-OLXThread.start()
+OLX=None
+#OLX = OLXFinder(data_dir, 'config_olx', mx_user, mx_password)
+#OLXThread = FinderThread(OLX)
+#OLXThread.start()
 
 wsgi_app = cherrypy.Application(FlatFinderWebApp.FlatFinder(data_dir, {'olx': OLXThread, 'gumtree': GumTreeThread}),'/')
 server = wsgiserver.CherryPyWSGIServer((ip, port), wsgi_app, server_name=host_name)
