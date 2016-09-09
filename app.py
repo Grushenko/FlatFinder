@@ -3,6 +3,8 @@
 import os
 import sys
 
+from FinderThread import FinderThread
+
 reload(sys)
 sys.setdefaultencoding('utf-8')
 import FlatFinder
@@ -10,6 +12,8 @@ import finder
 import threading
 import cherrypy
 from cherrypy import wsgiserver
+
+find = None
 
 if os.environ.has_key('OPENSHIFT_PYTHON_IP'):
     sys.path.insert(0, os.path.dirname(__file__))
@@ -24,24 +28,22 @@ if os.environ.has_key('OPENSHIFT_PYTHON_IP'):
     port = int(os.environ['OPENSHIFT_PYTHON_PORT'])
     host_name = os.environ['OPENSHIFT_GEAR_DNS']
     data_dir = os.environ['OPENSHIFT_DATA_DIR']
-    t = threading.Thread(
-        target=finder.Finder(data_dir, os.environ['MX_USER'], os.environ['MX_PASSWORD']).run)
-    t.daemon = True
-    t.start()
+    find = finder.Finder(data_dir, os.environ['MX_USER'], os.environ['MX_PASSWORD'])
 
 else:
     ip = '127.0.0.1'
     port = 8080
     host_name = 'localhost'
-    data_dir='./'
-    t = threading.Thread(target=finder.Finder(data_dir).run)
-    t.daemon = True
-    t.start()
+    data_dir = './'
+    find = finder.Finder(data_dir)
 
-wsgiapp = cherrypy.Application(FlatFinder.FlatFinder(data_dir), '/')
+thread = FinderThread(find)
+thread.start()
+
+wsgiapp = cherrypy.Application(FlatFinder.FlatFinder(data_dir, thread), '/')
 server = wsgiserver.CherryPyWSGIServer((ip, port), wsgiapp, server_name=host_name)
 server.start()
 
-#cherrypy.server.socket_host = ip
-#cherrypy.server.socket_port = port
-#cherrypy.quickstart(FlatFinder)
+# cherrypy.server.socket_host = ip
+# cherrypy.server.socket_port = port
+# cherrypy.quickstart(FlatFinder)
