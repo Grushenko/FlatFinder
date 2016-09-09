@@ -17,7 +17,6 @@ class OLXFinder(Finder):
         for href in hrefs:
             idx += 1
             if 'olx.pl' not in href:
-                self.add_to_log(href)
                 content += 'Can not check: ' + href + '\n\n'
                 self.processed.insert(idx, href)
                 if len(self.processed) >= 100:
@@ -41,7 +40,7 @@ class OLXFinder(Finder):
                     break
             if acc:
                 print "\t[FOUND] Found offer!"
-                self.add_to_log(href)
+                self.add_to_log(href, tree)
                 content += href + '\n\n'
         self.send_email(content)
 

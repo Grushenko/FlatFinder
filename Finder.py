@@ -161,7 +161,6 @@ class Finder(object):
     def process(self):
         self.tree = etree.parse(urllib2.urlopen(self.url), self.HTML_parser)
         hrefs = self.tree.xpath(self.offers)
-        print hrefs
         content = ''
         idx = -1
         for href in hrefs:
