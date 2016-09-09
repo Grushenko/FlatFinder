@@ -9,6 +9,9 @@ import time
 from lxml import etree
 from urlparse import urlparse
 
+import datetime
+
+
 def to_int(s):
     res = '0'
     for c in s:
@@ -88,6 +91,12 @@ class Finder(object):
         print 'path: ' + self.data_dir + self.config_file
         self.url = conf.get('general', 'url')
         self.offers = conf.get('general', 'offers')
+        self.xpath_price = conf.get('general', 'xpath_price')
+        self.xpath_name = conf.get('general', 'xpath_name')
+        self.xpath_district = conf.get('general', 'xpath_district')
+        self.xpath_rooms =  conf.get('general', 'xpath_rooms')
+
+
         self.interval = int(conf.get('general', 'interval'))
         self.sender = conf.get('smtp', 'from')
         self.rec = conf.get('smtp', 'to').split(',')
@@ -140,9 +149,15 @@ class Finder(object):
                 traceback.print_exc()
                 pass
 
-    def add_to_log(self, url):
-        with open(self.data_dir + self.log_file, 'a') as log:
-            log.write(url + '\n')
+    def add_to_log(self, url, tree):
+        date = datetime.datetime.now().strftime("%d.%m.%y %H:%M")
+        price = str(to_int(tree.xpath(self.xpath_price)[0]))
+        name = tree.xpath(self.xpath_name)[0]
+        rooms = tree.xpath(self.xpath_rooms)[0]
+        district = tree.xpath(self.xpath_district)[0]
+        message = '|'.join((url, date, name, district, price, rooms))
+        with codecs.open(self.data_dir + self.log_file, 'a', 'utf-8') as log:
+            log.write(message + '\n')
 
     def process(self):
         self.tree = etree.parse(urllib2.urlopen(self.url), self.HTML_parser)
@@ -172,7 +187,7 @@ class Finder(object):
                     break
             if acc:
                 print "\t[FOUND] Found offer!"
-                self.add_to_log(full_url)
+                self.add_to_log(full_url, tree)
                 content += full_url + '\n\n'
         self.send_email(content)
 

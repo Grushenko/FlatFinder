@@ -2,6 +2,10 @@
 url=http://www.olx.pl/nieruchomosci/mieszkania/wynajem/warszawa
 offers=//h3//a/@href
 interval=60
+xpath_price=//div[contains(@class, 'pricelabel')]//strong/text()
+xpath_name=to_be_added
+xpath_rooms=translate(normalize-space(//table[contains(@class, "details")]//table[@class="item"]//th[text()="Liczba pokoi"]//..//a/text()), ' ', '')
+xpath_district=translate(normalize-space(//div[@class="offercontentinner"]//span[contains(@class, "show-map-link")]//strong/text()), ' ', '')
 
 [smtp]
 #to=wojciech@gruszka.eu
