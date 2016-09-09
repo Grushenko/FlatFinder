@@ -3,6 +3,8 @@ import codecs
 import os
 import sys
 
+reload(sys)
+sys.setdefaultencoding('utf-8')
 import ConfigParser
 
 import cherrypy
@@ -12,9 +14,6 @@ from GumTreeFinder import GumTreeFinder
 from OLXFinder import OLXFinder
 from FinderThread import FinderThread
 import FlatFinderWebApp
-
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 # OPENSHIFT
 if 'OPENSHIFT_PYTHON_IP' in os.environ:
@@ -43,7 +42,7 @@ else:
         data_dir = './data/'
 
 cred_conf = ConfigParser.RawConfigParser()
-cred_conf.readfp(codecs.open(data_dir+'credentials', 'r', 'utf-8'))
+cred_conf.readfp(codecs.open(data_dir + 'credentials', 'r', 'utf-8'))
 mx_user = cred_conf.get('mx', 'mx_user')
 mx_password = cred_conf.get('mx', 'mx_password')
 
@@ -55,6 +54,6 @@ OLX = OLXFinder(data_dir, 'config_olx', mx_user, mx_password)
 OLXThread = FinderThread(OLX)
 OLXThread.start()
 
-wsgi_app = cherrypy.Application(FlatFinderWebApp.FlatFinder(data_dir, {'olx': OLXThread, 'gumtree': GumTreeThread}), '/')
+wsgi_app = cherrypy.Application(FlatFinderWebApp.FlatFinder(data_dir, {'olx': OLXThread, 'gumtree': GumTreeThread}),'/')
 server = wsgiserver.CherryPyWSGIServer((ip, port), wsgi_app, server_name=host_name)
 server.start()
