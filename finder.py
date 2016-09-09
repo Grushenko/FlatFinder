@@ -68,10 +68,7 @@ class Finder(object):
     def __init__(self, data_dir, mx_user=None, mx_password=None):
         self.data_dir = data_dir
 
-        conf = ConfigParser.RawConfigParser()
-        conf.readfp(codecs.open(self.data_dir + 'config', "r", "utf8"))
-
-        self.from_config(conf)
+        self.from_config()
 
         if mx_user:
             self.mx_user = mx_user
@@ -86,16 +83,22 @@ class Finder(object):
         self.processed = []
         self.subject = "GumTree Offers: Mieszkania w Warszawie"
 
-    def from_config(self, conf):
+    def from_config(self):
+        print 'Loading config file'
+        conf = ConfigParser.RawConfigParser()
+        conf.readfp(codecs.open(self.data_dir + 'config', "r", "utf8"))
+        print 'path: ' + self.data_dir + 'config'
         self.url = conf.get('general', 'url')
         self.offers = conf.get('general', 'offers')
-        self.interval = conf.get('general', 'interval')
+        self.interval = int(conf.get('general', 'interval'))
         self.sender = conf.get('smtp', 'from')
         self.rec = conf.get('smtp', 'to').split(',')
+
         if conf.has_option('smtp', 'mx_user'):
             self.mx_user = conf.get('smtp', 'mx_user')
         else:
             self.mx_user = None
+
         if conf.has_option('smtp', 'mx_password'):
             self.mx_passwd = conf.get('smtp', 'mx_password')
         else:
@@ -117,6 +120,7 @@ class Finder(object):
                     if conf.has_option(section, 'lower'):
                         lower = int(conf.get(section, 'lower'))
                     self.rules.append(NumberRule(conf.get(section, 'xpath'), lower, upper))
+
 
     def send_email(self, content):
         if not content:
