@@ -11,7 +11,7 @@ from cherrypy import wsgiserver
 from GumTreeFinder import GumTreeFinder
 from OLXFinder import OLXFinder
 from FinderThread import FinderThread
-import FlatFinder
+import FlatFinderWebApp
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -31,11 +31,11 @@ if 'OPENSHIFT_PYTHON_IP' in os.environ:
     host_name = os.environ['OPENSHIFT_GEAR_DNS']
     data_dir = os.environ['OPENSHIFT_DATA_DIR']
 else:
-    if len(sys.argv) == 3:
-        ip = sys.argv[1]
-        port = sys.argv[2]
-        host_name = sys.argv[1] + ':' + sys.argv[2]
-        data_dir = '../data'
+    if len(sys.argv) == 2:
+        ip = sys.argv[0]
+        port = sys.argv[1]
+        host_name = sys.argv[0] + ':' + sys.argv[1]
+        data_dir = '../data/'
     else:
         ip = '127.0.0.1'
         port = 8080
@@ -55,6 +55,6 @@ OLX = OLXFinder(data_dir, 'config_olx', mx_user, mx_password)
 OLXThread = FinderThread(OLX)
 OLXThread.start()
 
-wsgi_app = cherrypy.Application(FlatFinder.FlatFinder(data_dir, {'olx': OLXThread, 'gumtree': GumTreeThread}), '/')
+wsgi_app = cherrypy.Application(FlatFinderWebApp.FlatFinder(data_dir, {'olx': OLXThread, 'gumtree': GumTreeThread}), '/')
 server = wsgiserver.CherryPyWSGIServer((ip, port), wsgi_app, server_name=host_name)
 server.start()
