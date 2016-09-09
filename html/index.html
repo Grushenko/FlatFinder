@@ -29,13 +29,26 @@
     </div>
 
 
-    <div class="col-md-10">
+<div class="col-md-10">
         <h2 class="text-center">OLX</h2>
-        <ul>
+        <table class="table table-hover">
+            <tr>
+                <th>Date</th>
+                <th>Offer</th>
+                <th>District</th>
+                <th>Rooms</th>
+                <th>Price</th>
+            </tr>
             {% for item in found.olx %}
-                <li><a href="{{ item }}">{{ item }}</a></li>
+                <tr>
+                    <td>{{ item[1] }}</td>
+                    <td><a href="{{ item[0] }}">{{ item[2] }}</a></td>
+                    <td>{{ item[3] }}</td>
+                    <td>{{ item[5] }}</td>
+                    <td>{{ item[4] }}</td>
+                </tr>
             {% endfor %}
-        </ul>
+        </table>
     </div>
 
 {% endblock %}

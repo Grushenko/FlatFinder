@@ -50,7 +50,3 @@ GumTreeThread.start()
 wsgiapp = cherrypy.Application(FlatFinder.FlatFinder(data_dir, {'olx': None, 'gumtree': GumTreeThread}), '/')
 server = wsgiserver.CherryPyWSGIServer((ip, port), wsgiapp, server_name=host_name)
 server.start()
-
-# cherrypy.server.socket_host = ip
-# cherrypy.server.socket_port = port
-# cherrypy.quickstart(FlatFinder)
