@@ -1,6 +1,9 @@
 cd ${OPENSHIFT_REPO_DIR}
 pip install -r requirements.txt --no-cache-dir
 
-mv ${OPENSHIFT_DATA_DIR}/config ${OPENSHIFT_DATA_DIR}/config.bak
-cp ${OPENSHIFT_REPO_DIR}/config ${OPENSHIFT_DATA_DIR}/config
+mv ${OPENSHIFT_DATA_DIR}/config_olx ${OPENSHIFT_DATA_DIR}/config_olx.bak
+
+mv ${OPENSHIFT_DATA_DIR}/config_gumtree ${OPENSHIFT_DATA_DIR}/config_gumtree.bak
+
+cp ${OPENSHIFT_REPO_DIR}/data/* ${OPENSHIFT_DATA_DIR}/
 echo 'config file copied.'

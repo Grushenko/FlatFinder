@@ -1,14 +1,25 @@
 {% extends 'base.html' %}
 {% block body %}
-<h1 class="text-center">Znalezione oferty</h1>
-<div>
-    <ul>
-        {% for item in found %}
-        <li><a href="{{item}}">{{item}}</a></li>
-        {% endfor %}
-    </ul>
-</div>
-<div class="container-fluid">
-    <a class="btn btn-primary" href="config" role="button">Konfiguracja</a>
-</div>
+    <h1 class="text-center">Znalezione oferty</h1>
+
+    <div>
+        <h2 class="text-center">GumTree</h2>
+        <ul>
+            {% for item in found.gumtree %}
+                <li><a href="{{ item }}">{{ item }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div>
+        <h2 class="text-center">OLX</h2>
+        <ul>
+            {% for item in found.olx %}
+                <li><a href="{{ item }}">{{ item }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="container-fluid">
+        <a class="btn btn-primary" href="panel" role="button">Panel konfiguracyjny</a>
+    </div>
 {% endblock %}
