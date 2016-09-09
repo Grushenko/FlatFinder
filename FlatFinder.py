@@ -26,9 +26,15 @@ class FlatFinder(object):
         return tmpl.render(config=config)
 
     @cherrypy.expose
-    def save_config(self):
+    def config_save(self, code, password):
+        success = False
+        if password == 'passwd':
+            with open(self.path + 'config', 'w') as config:
+                config.write(code)
+            success = True
         tmpl = self.env.get_template('config.html')
         config = ''
         with open(self.path + 'config', 'r') as config:
             config = config.read()
-        return tmpl.render(config=config)
+
+        return tmpl.render(config=config, success=success)
