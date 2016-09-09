@@ -1,18 +1,19 @@
 [general]
-url=http://www.gumtree.pl/s-mieszkania-i-domy-do-wynajecia/warszawa/v1c9008l3200008p1
-offers=//div[@class="view"]//a[@class="href-link"]/@href
+url=http://olx.pl/nieruchomosci/mieszkania/wynajem/warszawa
+offers=//h3//a/@href
 interval=60
 
 [smtp]
-to=wojciech@gruszka.eu
-#to=kamilawinnicka@gmail.com,wojciech@gruszka.eu
+#to=wojciech@gruszka.eu
+to=kamilawinnicka@gmail.com,wojciech@gruszka.eu
 #to=kamilawinnicka@gmail.com,wojciech@gruszka.eu,kd305513@gmail.com
 from=wojciechgruszka@gmx.com
 mx_user=wojciechgruszka@gmx.com
+mx_password=asdasd
 
 #District
 [rule1]
-xpath=//div[@class="vip-details"]//a[position()=1]/text()
+xpath=//div[@class="offercontentinner"]//span[contains(@class, "show-map-link")]//strong/text()
 word=wola,ochota,włochy
 
 #Number of rooms
@@ -21,11 +22,11 @@ word=wola,ochota,włochy
 # word=2 -> 2 rooms
 # ...
 [rule2]
-xpath=substring(//div[@class="vip-details"]//span[@class="name" and text()="Liczba pokoi"]//..//span[position()=2]/text(),1,2)
+xpath=substring(translate(normalize-space(//table[contains(@class, "details")]//table[@class="item"]//th[text()="Liczba pokoi"]//..//a/text()), ' ', ''),1,2)
 word=3,4
 
 #Price
 [rule3]
-xpath=//div[@class="price"]//span[@class="amount"]/text()
+xpath=//div[contains(@class, 'pricelabel')]//strong/text()
 lower=0
 upper=6000

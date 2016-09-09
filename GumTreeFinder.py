@@ -7,4 +7,4 @@ class GumTreeFinder(Finder):
         self.subject = 'GumTree Offers: Mieszkania w Warszawie'
 
 if __name__ == "__main__":
-    GumTreeFinder('./data', 'config_gumtree').run()
+    GumTreeFinder('./data/', 'config_gumtree').run()
