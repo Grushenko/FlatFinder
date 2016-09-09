@@ -10,7 +10,6 @@ to=wojciech@gruszka.eu
 from=wojciechgruszka@gmx.com
 mx_user=wojciechgruszka@gmx.com
 
-
 #District
 [rule1]
 xpath=//div[@class="vip-details"]//a[position()=1]/text()

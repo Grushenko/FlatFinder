@@ -9,6 +9,8 @@ import time
 from lxml import etree
 from urlparse import urlparse
 
+from OLXFinder import OLXFinder
+
 HTML_parser = etree.HTMLParser()
 
 
@@ -65,9 +67,9 @@ class NumberRule(Rule):
 
 
 class Finder(object):
-    def __init__(self, data_dir, mx_user=None, mx_password=None):
+    def __init__(self, data_dir, config_file, mx_user=None, mx_password=None):
         self.data_dir = data_dir
-
+        self.config_file = config_file
         self.from_config()
 
         if mx_user:
@@ -81,13 +83,13 @@ class Finder(object):
         self.domain = '{uri.scheme}://{uri.netloc}'.format(uri=urlparse(self.url))
         self.tree = etree.parse(urllib2.urlopen(self.url), HTML_parser)
         self.processed = []
-        self.subject = "GumTree Offers: Mieszkania w Warszawie"
+        self.subject = 'Blank subject, something is wrong'
 
     def from_config(self):
-        print 'Loading config file'
+        print 'Loading config_gumtree file'
         conf = ConfigParser.RawConfigParser()
-        conf.readfp(codecs.open(self.data_dir + 'config', "r", "utf8"))
-        print 'path: ' + self.data_dir + 'config'
+        conf.readfp(codecs.open(self.data_dir + self.config_file, "r", "utf8"))
+        print 'path: ' + self.data_dir + self.config_file
         self.url = conf.get('general', 'url')
         self.offers = conf.get('general', 'offers')
         self.interval = int(conf.get('general', 'interval'))
@@ -120,7 +122,6 @@ class Finder(object):
                     if conf.has_option(section, 'lower'):
                         lower = int(conf.get(section, 'lower'))
                     self.rules.append(NumberRule(conf.get(section, 'xpath'), lower, upper))
-
 
     def send_email(self, content):
         if not content:
@@ -192,6 +193,3 @@ class Finder(object):
         while True:
             self.process()
             self.sleep()
-
-if __name__ == "__main__":
-    Finder('./').run()
