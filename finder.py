@@ -89,6 +89,7 @@ class Finder(object):
     def from_config(self, conf):
         self.url = conf.get('general', 'url')
         self.offers = conf.get('general', 'offers')
+        self.interval = conf.get('general', 'interval')
         self.sender = conf.get('smtp', 'from')
         self.rec = conf.get('smtp', 'to').split(',')
         if conf.has_option('smtp', 'mx_user'):
@@ -142,6 +143,42 @@ class Finder(object):
         with open(self.data_dir + 'found.txt', 'a') as log:
             log.write(url + '\n')
 
+    def process(self):
+        self.tree = etree.parse(urllib2.urlopen(self.url), HTML_parser)
+        hrefs = self.tree.xpath(self.offers)
+        content = ''
+        idx = -1
+        for href in hrefs:
+            full_url = self.domain + href
+            idx += 1
+            if full_url in self.processed:
+                continue
+            self.processed.insert(idx, full_url)
+            if len(self.processed) >= 100:
+                self.processed.pop()
+
+            try:
+                tree = etree.parse(urllib2.urlopen(full_url), HTML_parser)
+            except urllib2.HTTPError:
+                print "[ERROR] Parsing offer error"
+                continue
+            acc = True
+            print full_url
+            for rule in self.rules:
+                if not rule.check(tree):
+                    acc = False
+                    break
+            if acc:
+                print "\t[FOUND] Found offer!"
+                self.add_to_log(full_url)
+                content += full_url + '\n\n'
+        self.send_email(content)
+
+    def sleep(self):
+        print 'sleep'
+        time.sleep(self.interval)
+        print 'wake'
+
     def run(self):
         # self.send_email("""
         # FlatFinder 0.1.0 init.
@@ -149,41 +186,8 @@ class Finder(object):
         # """)
 
         while True:
-            self.tree = etree.parse(urllib2.urlopen(self.url), HTML_parser)
-            hrefs = self.tree.xpath(self.offers)
-            content = ''
-            idx = -1
-            for href in hrefs:
-                idx += 1
-
-                full_url = self.domain + href
-
-                if full_url in self.processed:
-                    continue
-
-                self.processed.insert(idx, full_url)
-                if len(self.processed) >= 100:
-                    self.processed.pop()
-                try:
-                    tree = etree.parse(urllib2.urlopen(full_url), HTML_parser)
-                except urllib2.HTTPError:
-                    print "[ERROR] Parsing offer error"
-                    continue
-                acc = True
-                print full_url
-                for rule in self.rules:
-                    if not rule.check(tree):
-                        acc = False
-                        break
-                if acc:
-                    print "\t[FOUND] Found offer!"
-                    self.add_to_log(full_url)
-                    content += full_url + '\n\n'
-            self.send_email(content)
-            print 'sleep'
-            time.sleep(60)
-            print 'wake'
-
+            self.process()
+            self.sleep()
 
 if __name__ == "__main__":
     Finder('./').run()

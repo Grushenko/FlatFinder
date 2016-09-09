@@ -1,6 +1,7 @@
 [general]
 url=http://www.gumtree.pl/s-mieszkania-i-domy-do-wynajecia/warszawa/v1c9008l3200008p1
 offers=//div[@class="view"]//a[@class="href-link"]/@href
+interval=60
 
 [smtp]
 #to=wojciech@gruszka.eu
