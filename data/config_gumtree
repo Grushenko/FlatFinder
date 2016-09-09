@@ -4,12 +4,12 @@ offers=//div[@class="view"]//a[@class="href-link"]/@href
 interval=60
 
 [smtp]
-to=wojciech@gruszka.eu
-#to=kamilawinnicka@gmail.com,wojciech@gruszka.eu
+#to=wojciech@gruszka.eu
+to=kamilawinnicka@gmail.com,wojciech@gruszka.eu
 #to=kamilawinnicka@gmail.com,wojciech@gruszka.eu,kd305513@gmail.com
 from=wojciechgruszka@gmx.com
 mx_user=wojciechgruszka@gmx.com
-
+mx_password=asdasd
 
 #District
 [rule1]

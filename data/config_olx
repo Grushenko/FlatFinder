@@ -1,0 +1,32 @@
+[general]
+url=http://olx.pl/nieruchomosci/mieszkania/wynajem/warszawa
+offers=//h3//a/@href
+interval=60
+
+[smtp]
+#to=wojciech@gruszka.eu
+to=kamilawinnicka@gmail.com,wojciech@gruszka.eu
+#to=kamilawinnicka@gmail.com,wojciech@gruszka.eu,kd305513@gmail.com
+from=wojciechgruszka@gmx.com
+mx_user=wojciechgruszka@gmx.com
+mx_password=asdasd
+
+#District
+[rule1]
+xpath=//div[@class="offercontentinner"]//span[contains(@class, "show-map-link")]//strong/text()
+word=wola,ochota,włochy
+
+#Number of rooms
+# word=k -> kawalerka lub garsoniera
+# word=1 -> 1 room
+# word=2 -> 2 rooms
+# ...
+[rule2]
+xpath=substring(translate(normalize-space(//table[contains(@class, "details")]//table[@class="item"]//th[text()="Liczba pokoi"]//..//a/text()), ' ', ''),1,2)
+word=3,4
+
+#Price
+[rule3]
+xpath=//div[contains(@class, 'pricelabel')]//strong/text()
+lower=0
+upper=6000
