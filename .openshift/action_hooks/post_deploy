@@ -1,3 +1,0 @@
-mv ${OPENSHIFT_DATA_DIR}/config ${OPENSHIFT_DATA_DIR}/config.bak
-cp ${OPENSHIFT_REPO_DIR}/config ${OPENSHIFT_DATA_DIR}/config
-echo 'config file copied.'

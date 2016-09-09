@@ -87,7 +87,7 @@ class Finder(object):
         print 'Loading config file'
         conf = ConfigParser.RawConfigParser()
         conf.readfp(codecs.open(self.data_dir + 'config', "r", "utf8"))
-
+        print 'path: ' + self.data_dir + 'config'
         self.url = conf.get('general', 'url')
         self.offers = conf.get('general', 'offers')
         self.interval = int(conf.get('general', 'interval'))
