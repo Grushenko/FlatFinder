@@ -29,8 +29,8 @@ if os.environ.has_key('OPENSHIFT_PYTHON_IP'):
     port = int(os.environ['OPENSHIFT_PYTHON_PORT'])
     host_name = os.environ['OPENSHIFT_GEAR_DNS']
     data_dir = os.environ['OPENSHIFT_DATA_DIR']
-    OLX = OLXFinder.OLXFinder(data_dir, 'config_olx', os.environ['MX_USER'], os.environ['MX_PASSWORD'])
     GumTree = GumTreeFinder.GumTreeFinder(data_dir, 'config_gumtree', os.environ['MX_USER'], os.environ['MX_PASSWORD'])
+    OLX = OLXFinder.OLXFinder(data_dir, 'config_olx', os.environ['MX_USER'], os.environ['MX_PASSWORD'])
 
 
 else:
@@ -38,8 +38,8 @@ else:
     port = 8080
     host_name = 'localhost'
     data_dir = './data/'
-    OLX = OLXFinder.OLXFinder(data_dir, 'config_olx')
     GumTree = GumTreeFinder.GumTreeFinder(data_dir, 'config_gumtree')
+    OLX = OLXFinder.OLXFinder(data_dir, 'config_olx')
 
 OLXThread = FinderThread(OLX)
 GumTreeThread = FinderThread(GumTree)
