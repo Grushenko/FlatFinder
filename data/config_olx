@@ -8,8 +8,7 @@ interval=60
 to=kamilawinnicka@gmail.com,wojciech@gruszka.eu
 #to=kamilawinnicka@gmail.com,wojciech@gruszka.eu,kd305513@gmail.com
 from=wojciechgruszka@gmx.com
-mx_user=wojciechgruszka@gmx.com
-mx_password=asdasd
+
 
 #District
 [rule1]
