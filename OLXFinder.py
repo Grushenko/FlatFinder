@@ -16,13 +16,14 @@ class OLXFinder(Finder):
         idx = -1
         for href in hrefs:
             idx += 1
+            if href in self.processed:
+                continue
             if 'olx.pl' not in href:
-                content += 'Can not check: ' + href + '\n\n'
+                self.add_to_log(href, None)
+                #content += 'Can not check: ' + href + '\n\n'
                 self.processed.insert(idx, href)
                 if len(self.processed) >= 100:
                     self.processed.pop()
-                continue
-            if href in self.processed:
                 continue
             self.processed.insert(idx, href)
             if len(self.processed) >= 100:
@@ -44,5 +45,3 @@ class OLXFinder(Finder):
                 content += href + '\n\n'
         self.send_email(content)
 
-if __name__ == "__main__":
-    OLXFinder('./data/', 'config_olx').run()

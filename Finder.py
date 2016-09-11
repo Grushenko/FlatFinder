@@ -35,7 +35,7 @@ class WordRule(Rule):
         self.words = words
 
     def check(self, tree):
-        if not tree.xpath(self.xpath)[0]:
+        if not tree.xpath(self.xpath):
             return True
 
         offer_word = tree.xpath(self.xpath)[0].lower()
@@ -150,10 +150,27 @@ class Finder(object):
 
     def add_to_log(self, url, tree):
         date = datetime.datetime.now().strftime("%d.%m.%y %H:%M")
-        price = str(to_int(tree.xpath(self.xpath_price)[0]))
-        name = tree.xpath(self.xpath_name)[0]
-        rooms = tree.xpath(self.xpath_rooms)[0]
-        district = tree.xpath(self.xpath_district)[0]
+        price = '-'
+        name = url
+        rooms = '-'
+        district = '-'
+        try:
+            price = str(to_int(tree.xpath(self.xpath_price)[0]))
+        except:
+            pass
+        try:
+            name = tree.xpath(self.xpath_name)[0]
+        except:
+            pass
+        try:
+            rooms = tree.xpath(self.xpath_rooms)[0]
+        except:
+            pass
+        try:
+            district = tree.xpath(self.xpath_district)[0]
+        except:
+            pass
+
         message = '|'.join((url, date, name, district, price, rooms))
         with codecs.open(self.data_dir + self.log_file, 'a', 'utf-8') as log:
             log.write(message + '\n')

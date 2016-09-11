@@ -3,9 +3,9 @@ url=http://www.olx.pl/nieruchomosci/mieszkania/wynajem/warszawa
 offers=//h3//a/@href
 interval=60
 xpath_price=//div[contains(@class, 'pricelabel')]//strong/text()
-xpath_name=to_be_added
+xpath_name=//div[@class="content"]//h1/text()
 xpath_rooms=translate(normalize-space(//table[contains(@class, "details")]//table[@class="item"]//th[text()="Liczba pokoi"]//..//a/text()), ' ', '')
-xpath_district=translate(normalize-space(//div[@class="offercontentinner"]//span[contains(@class, "show-map-link")]//strong/text()), ' ', '')
+xpath_district=//div[@class="offercontentinner"]//span[contains(@class, "show-map-link")]//strong/text()
 
 [smtp]
 #to=wojciech@gruszka.eu
@@ -31,4 +31,4 @@ word=3,4
 [rule3]
 xpath=//div[contains(@class, 'pricelabel')]//strong/text()
 lower=0
-upper=2300
+upper=2400
