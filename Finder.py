@@ -65,9 +65,10 @@ class NumberRule(Rule):
 
 
 class Finder(object):
-    def __init__(self, data_dir, config_file, mx_user=None, mx_password=None):
+    def __init__(self, data_dir, config_file, local=False, mx_user=None, mx_password=None):
         self.data_dir = data_dir
         self.config_file = config_file
+        self.local = local
         self.HTML_parser = etree.HTMLParser()
         self.from_config()
         if mx_user:
@@ -170,10 +171,17 @@ class Finder(object):
             district = tree.xpath(self.xpath_district)[0]
         except:
             pass
-
         message = '|'.join((url, date, name, district, price, rooms))
+        self.update_local_log(message)
+        if not self.local:
+            self.update_remote_log(message)
+
+    def update_local_log(self, data):
         with codecs.open(self.data_dir + self.log_file, 'a', 'utf-8') as log:
-            log.write(message + '\n')
+            log.write(data + '\n')
+
+    def update_remote_log(self, data):
+        return
 
     def process(self):
         self.tree = etree.parse(urllib2.urlopen(self.url), self.HTML_parser)

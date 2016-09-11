@@ -1,11 +1,14 @@
+import httplib
+import requests
+import urllib
 import urllib2
 from lxml import etree
 from Finder import Finder
 
 
 class OLXFinder(Finder):
-    def __init__(self, data_dir, config_file, mx_user=None, mx_password=None):
-        super(OLXFinder, self).__init__(data_dir, config_file, mx_user, mx_password)
+    def __init__(self, data_dir, config_file, local=False, mx_user=None, mx_password=None):
+        super(OLXFinder, self).__init__(data_dir, config_file, local, mx_user, mx_password)
         self.subject = 'OLX Offers: Mieszkania w Warszawie'
         self.log_file = 'found_olx.txt'
 
@@ -45,3 +48,11 @@ class OLXFinder(Finder):
                 content += href + '\n\n'
         self.send_email(content)
 
+    def update_remote_log(self, data):
+        r = requests.post('http://flatfinder-grushenko.rhcloud.com/olx_update', {'data': data})
+        #post = urllib.urlencode({'data': data})
+        #http = httplib.HTTPConnection('http://flatfinder-grushenko.rhcloud.com:80')
+        #headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain"}
+        #http.request('POST', '/olx_update', post, headers)
+        #r = http.getresponse()
+        #print r

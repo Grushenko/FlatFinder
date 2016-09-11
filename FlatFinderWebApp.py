@@ -1,3 +1,4 @@
+import codecs
 import os
 import cherrypy
 from jinja import Environment, FileSystemLoader
@@ -15,7 +16,7 @@ class FlatFinder(object):
         tmpl = self.env.get_template('index.html')
         found = {'olx': [], 'gumtree': []}
         try:
-            with open(self.path + 'found_olx.txt', 'r') as html:
+            with codecs.open(self.path + 'found_olx.txt', 'r', 'utf-8') as html:
                 for row in html.read().split('\n'):
                     if len(row):
                         found['olx'].append(row.split('|'))
@@ -23,7 +24,7 @@ class FlatFinder(object):
             pass
 
         try:
-            with open(self.path + 'found_gumtree.txt', 'r') as html:
+            with codecs.open(self.path + 'found_gumtree.txt', 'r', 'utf-8') as html:
                 for row in html.read().split('\n'):
                     if len(row):
                         found['gumtree'].append(row.split('|'))
@@ -31,6 +32,15 @@ class FlatFinder(object):
             pass
 
         return tmpl.render(found=found)
+
+    @cherrypy.expose
+    def olx_update(self, value=None):
+        if value:
+            with codecs.open(self.path + 'found_olx.txt', 'a', 'utf-8') as log:
+                log.write(value)
+            return value
+        return 'No value!'
+
 
     @cherrypy.expose
     def panel(self):

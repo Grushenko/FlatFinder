@@ -46,7 +46,7 @@ cred_conf.readfp(codecs.open(data_dir + 'credentials', 'r', 'utf-8'))
 mx_user = cred_conf.get('mx', 'mx_user')
 mx_password = cred_conf.get('mx', 'mx_password')
 
-GumTree = GumTreeFinder(data_dir, 'config_gumtree', mx_user, mx_password)
+GumTree = GumTreeFinder(data_dir, 'config_gumtree', False, mx_user, mx_password)
 GumTreeThread = FinderThread(GumTree)
 GumTreeThread.start()
 
