@@ -173,7 +173,7 @@ class Finder(object):
             pass
         message = '|'.join((url, date, name, district, price, rooms))
         self.update_local_log(message)
-        if not self.local:
+        if self.local:
             self.update_remote_log(message)
 
     def update_local_log(self, data):

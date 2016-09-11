@@ -38,6 +38,7 @@ class FlatFinder(object):
         if value:
             with codecs.open(self.path + 'found_olx.txt', 'a', 'utf-8') as log:
                 log.write(value)
+                log.write('\n')
             return value
         return 'No value!'
 

@@ -49,10 +49,5 @@ class OLXFinder(Finder):
         self.send_email(content)
 
     def update_remote_log(self, data):
-        r = requests.post('http://flatfinder-grushenko.rhcloud.com/olx_update', {'data': data})
-        #post = urllib.urlencode({'data': data})
-        #http = httplib.HTTPConnection('http://flatfinder-grushenko.rhcloud.com:80')
-        #headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain"}
-        #http.request('POST', '/olx_update', post, headers)
-        #r = http.getresponse()
-        #print r
+        r = requests.post('http://flatfinder-grushenko.rhcloud.com/olx_update', {'value': data})
+
