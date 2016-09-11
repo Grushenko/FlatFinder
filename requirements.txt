@@ -2,3 +2,4 @@ cherrypy==8.1.0
 lxml>=3.2.0
 jinja
 urllib3==1.11
+requests
