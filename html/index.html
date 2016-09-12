@@ -1,77 +1,81 @@
 {% extends 'base.html' %}
+
+{% macro result_table(name, data, title) -%}
+    <div class="col-md-10" style="margin: 0 auto;float: none;">
+        <h2 class="text-center">{{ title }}</h2>
+        <table id="{{ name }}" class="table table-hover">
+            <tr>
+                <th>Date</th>
+                <th>Offer</th>
+                <th>District</th>
+                <th>Rooms</th>
+                <th>Price</th>
+            </tr>
+            {% for item in data %}
+                <tr id="{{ loop.index }}" onclick="update_row(this)">
+                    <td>{{ item[1] }}</td>
+                    <td><a href="{{ item[0] }}">{{ item[2] }}</a></td>
+                    <td>{{ item[3] }}</td>
+                    <td>{{ item[5] }}</td>
+                    <td>{{ item[4] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{%- endmacro %}
+
 {% block body %}
+    <script>
+        var map = {
+            0: '',
+            1: 'warning',
+            2: 'danger',
+            3: 'success'
+        };
+
+        function load() {
+            $('tr').each(function (index) {
+                var self = $(this);
+                var site = self.parent().parent().prop('id');
+                var element_id = self.prop('id');
+                var storedData = JSON.parse(localStorage.getItem(site));
+                if (storedData && storedData[element_id]) {
+                    self.attr('class', map[storedData[element_id]]);
+                }
+            });
+        }
+
+        function update_row(param) {
+            var element = $(param);
+            var element_id = element.prop('id');
+            var site = element.parent().parent().prop('id');
+
+            var storedData = JSON.parse(localStorage.getItem(site));
+            storedData = storedData || {};
+            if (!storedData[element_id])
+                storedData[element_id] = 1;
+            else {
+                storedData[element_id]++;
+                storedData[element_id] %= 4;
+            }
+            console.log(storedData);
+            localStorage.setItem(site, JSON.stringify(storedData));
+
+            $(param).attr('class', map[storedData[element_id]]);
+
+        }
+
+        window.onload = load;
+    </script>
+
     <h1 class="text-center">Znalezione oferty</h1>
 
     <div class="col-md-12" style="margin: 0 auto;float: none;">
         <a class="btn btn-primary" href="panel" role="button">Panel konfiguracyjny</a>
     </div>
 
-    <div class="col-md-10" style="margin: 0 auto;float: none;">
-        <h2 class="text-center">GumTree</h2>
-        <table class="table table-hover">
-            <tr>
-                <th>Date</th>
-                <th>Offer</th>
-                <th>District</th>
-                <th>Rooms</th>
-                <th>Price</th>
-            </tr>
-            {% for item in found.gumtree %}
-                <tr>
-                    <td>{{ item[1] }}</td>
-                    <td><a href="{{ item[0] }}">{{ item[2] }}</a></td>
-                    <td>{{ item[3] }}</td>
-                    <td>{{ item[5] }}</td>
-                    <td>{{ item[4] }}</td>
-                </tr>
-            {% endfor %}
-        </table>
-    </div>
-
-
-    <div class="col-md-10" style="margin: 0 auto;float: none;">
-        <h2 class="text-center">OLX</h2>
-        <table class="table table-hover">
-            <tr>
-                <th>Date</th>
-                <th>Offer</th>
-                <th>District</th>
-                <th>Rooms</th>
-                <th>Price</th>
-            </tr>
-            {% for item in found.olx %}
-                <tr>
-                    <td>{{ item[1] }}</td>
-                    <td><a href="{{ item[0] }}">{{ item[2] }}</a></td>
-                    <td>{{ item[3] }}</td>
-                    <td>{{ item[5] }}</td>
-                    <td>{{ item[4] }}</td>
-                </tr>
-            {% endfor %}
-        </table>
-    </div>
-
-        <div class="col-md-10" style="margin: 0 auto;float: none;">
-        <h2 class="text-center">OtoDom</h2>
-        <table class="table table-hover">
-            <tr>
-                <th>Date</th>
-                <th>Offer</th>
-                <th>District</th>
-                <th>Rooms</th>
-                <th>Price</th>
-            </tr>
-            {% for item in found.otodom %}
-                <tr>
-                    <td>{{ item[1] }}</td>
-                    <td><a href="{{ item[0] }}">{{ item[2] }}</a></td>
-                    <td>{{ item[3] }}</td>
-                    <td>{{ item[5] }}</td>
-                    <td>{{ item[4] }}</td>
-                </tr>
-            {% endfor %}
-        </table>
-    </div>
-
+    {{ result_table('gumtree', found.gumtree, 'GumTree') }}
+    {{ result_table('olx', found.olx, 'OLX') }}
+    {{ result_table('otodom', found.otodom, 'OtoDom') }}
 
 {% endblock %}
