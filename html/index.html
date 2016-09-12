@@ -51,4 +51,27 @@
         </table>
     </div>
 
+        <div class="col-md-10" style="margin: 0 auto;float: none;">
+        <h2 class="text-center">OtoDom</h2>
+        <table class="table table-hover">
+            <tr>
+                <th>Date</th>
+                <th>Offer</th>
+                <th>District</th>
+                <th>Rooms</th>
+                <th>Price</th>
+            </tr>
+            {% for item in found.otodom %}
+                <tr>
+                    <td>{{ item[1] }}</td>
+                    <td><a href="{{ item[0] }}">{{ item[2] }}</a></td>
+                    <td>{{ item[3] }}</td>
+                    <td>{{ item[5] }}</td>
+                    <td>{{ item[4] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+
 {% endblock %}

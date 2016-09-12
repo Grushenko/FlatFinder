@@ -14,7 +14,7 @@ class FlatFinder(object):
     @cherrypy.expose
     def index(self):
         tmpl = self.env.get_template('index.html')
-        found = {'olx': [], 'gumtree': []}
+        found = {'olx': [], 'gumtree': [], 'otodom': []}
         try:
             with codecs.open(self.path + 'found_olx.txt', 'r', 'utf-8') as html:
                 for row in html.read().split('\n'):
@@ -31,6 +31,14 @@ class FlatFinder(object):
         except:
             pass
 
+        try:
+            with codecs.open(self.path + 'found_otodom.txt', 'r', 'utf-8') as html:
+                for row in html.read().split('\n'):
+                    if len(row):
+                        found['otodom'].append(row.split('|'))
+        except:
+            pass
+
         return tmpl.render(found=found)
 
     @cherrypy.expose
@@ -42,6 +50,14 @@ class FlatFinder(object):
             return value
         return 'No value!'
 
+    @cherrypy.expose
+    def otodom_update(self, value=None):
+        if value:
+            with codecs.open(self.path + 'found_otodom.txt', 'a', 'utf-8') as log:
+                log.write(value)
+                log.write('\n')
+            return value
+        return 'No value!'
 
     @cherrypy.expose
     def panel(self):

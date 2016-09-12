@@ -156,19 +156,20 @@ class Finder(object):
         rooms = '-'
         district = '-'
         try:
-            price = str(to_int(tree.xpath(self.xpath_price)[0]))
+            price = str(to_int(tree.xpath(self.xpath_price)))
         except:
             pass
         try:
-            name = tree.xpath(self.xpath_name)[0]
+            name = tree.xpath(self.xpath_name)
+            print name
         except:
             pass
         try:
-            rooms = tree.xpath(self.xpath_rooms)[0]
+            rooms = tree.xpath(self.xpath_rooms)[0] # first character
         except:
             pass
         try:
-            district = tree.xpath(self.xpath_district)[0]
+            district = tree.xpath(self.xpath_district)
         except:
             pass
         message = '|'.join((url, date, name, district, price, rooms))
@@ -198,6 +199,7 @@ class Finder(object):
                 self.processed.pop()
 
             try:
+                print full_url
                 tree = etree.parse(urllib2.urlopen(full_url), self.HTML_parser)
             except urllib2.HTTPError:
                 print "[ERROR] Parsing offer error"
@@ -214,9 +216,9 @@ class Finder(object):
                 content += full_url + '\n\n'
         self.send_email(content)
 
-    def convert_log(self, file):
+    def convert_log(self, f):
         old_log = ''
-        with codecs.open(self.data_dir + file, 'r', 'utf-8') as old:
+        with codecs.open(self.data_dir + f, 'r', 'utf-8') as old:
             old_log = old.read()
         for href in old_log.split('\n'):
             try:

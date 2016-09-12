@@ -1,16 +1,15 @@
-import httplib
 import requests
-import urllib
 import urllib2
 from lxml import etree
+
 from Finder import Finder
 
 
-class OLXFinder(Finder):
+class OtoDomFinder(Finder):
     def __init__(self, data_dir, config_file, local=False, mx_user=None, mx_password=None):
-        super(OLXFinder, self).__init__(data_dir, config_file, local, mx_user, mx_password)
-        self.subject = 'OLX Offers: Mieszkania w Warszawie'
-        self.log_file = 'found_olx.txt'
+        super(OtoDomFinder, self).__init__(data_dir, config_file, local, mx_user, mx_password)
+        self.subject = 'OtoDom Offers: Mieszkania w Warszawie'
+        self.log_file = 'found_otodom.txt'
 
     def process(self):
         self.tree = etree.parse(urllib2.urlopen(self.url), self.HTML_parser)
@@ -21,14 +20,10 @@ class OLXFinder(Finder):
             idx += 1
             if href in self.processed:
                 continue
-            if 'olx.pl' not in href:
-                self.processed.insert(idx, href)
-                if len(self.processed) >= 100:
-                    self.processed.pop()
-                continue
             self.processed.insert(idx, href)
             if len(self.processed) >= 100:
                 self.processed.pop()
+
             try:
                 tree = etree.parse(urllib2.urlopen(href), self.HTML_parser)
             except urllib2.HTTPError:
@@ -47,4 +42,4 @@ class OLXFinder(Finder):
         self.send_email(content)
 
     def update_remote_log(self, data):
-        r = requests.post('http://flatfinder-grushenko.rhcloud.com/olx_update', {'value': data})
+        r = requests.post('http://flatfinder-grushenko.rhcloud.com/otodom_update', {'value': data})

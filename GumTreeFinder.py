@@ -8,4 +8,4 @@ class GumTreeFinder(Finder):
         self.log_file = 'found_gumtree.txt'
 
 if __name__ == "__main__":
-    GumTreeFinder('./data/', 'config_gumtree', True).run()
+    GumTreeFinder('./data/', 'config_gumtree', True, ' ', ' ').run()
