@@ -55,6 +55,8 @@ class NumberRule(Rule):
         self.upper = upper
 
     def check(self, tree):
+        if not tree.xpath(self.xpath):
+            return True
         offer_number = to_int(tree.xpath(self.xpath)[0])
         print offer_number
         if self.upper >= offer_number >= self.lower:

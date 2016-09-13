@@ -12,32 +12,44 @@ class FlatFinder(object):
         self.password = '<3<3<3<3<3'
 
     @cherrypy.expose
-    def index(self):
+    def index(self, sort_by='date'):
+
+        sorting_order = {'date': 1, 'name': 2, 'rooms': 5, 'price': 4, 'district': 3}
+
         tmpl = self.env.get_template('index.html')
         found = {'olx': [], 'gumtree': [], 'otodom': []}
         try:
             with codecs.open(self.path + 'found_olx.txt', 'r', 'utf-8') as html:
-                for row in html.read().split('\n'):
+                for idx, row in enumerate(html.read().split('\n')):
                     if len(row):
-                        found['olx'].append(row.split('|'))
+                        r = row.split('|')
+                        r.append(idx)
+                        found['olx'].append(tuple(r))
         except:
             pass
 
         try:
             with codecs.open(self.path + 'found_gumtree.txt', 'r', 'utf-8') as html:
-                for row in html.read().split('\n'):
+                for idx, row in enumerate(html.read().split('\n')):
                     if len(row):
-                        found['gumtree'].append(row.split('|'))
+                        r = row.split('|')
+                        r.append(idx)
+                        found['gumtree'].append(tuple(r))
         except:
             pass
 
         try:
             with codecs.open(self.path + 'found_otodom.txt', 'r', 'utf-8') as html:
-                for row in html.read().split('\n'):
+                for idx, row in enumerate(html.read().split('\n')):
                     if len(row):
-                        found['otodom'].append(row.split('|'))
+                        r = row.split('|')
+                        r.append(idx)
+                        found['otodom'].append(tuple(r))
         except:
             pass
+
+        for data in found:
+            found[data] = sorted(found[data], key=lambda key: key[sorting_order.get(sort_by, 1)])
 
         return tmpl.render(found=found)
 

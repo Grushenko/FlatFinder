@@ -11,7 +11,6 @@ import cherrypy
 from cherrypy import wsgiserver
 
 from GumTreeFinder import GumTreeFinder
-from OLXFinder import OLXFinder
 from FinderThread import FinderThread
 import FlatFinderWebApp
 
@@ -55,7 +54,6 @@ OLXThread = None
 # OLXThread = FinderThread(OLX)
 # OLXThread.start()
 
-wsgi_app = cherrypy.Application(FlatFinderWebApp.FlatFinder(data_dir, {'olx': OLXThread, 'gumtree': GumTreeThread}),
-                                '/')
+wsgi_app = cherrypy.Application(FlatFinderWebApp.FlatFinder(data_dir, {'olx': OLXThread, 'gumtree': GumTreeThread}), '/')
 server = wsgiserver.CherryPyWSGIServer((ip, port), wsgi_app, server_name=host_name)
 server.start()

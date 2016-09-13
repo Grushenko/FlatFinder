@@ -5,14 +5,14 @@
         <h2 class="text-center">{{ title }}</h2>
         <table id="{{ name }}" class="table table-hover">
             <tr>
-                <th>Date</th>
-                <th>Offer</th>
-                <th>District</th>
-                <th>Rooms</th>
-                <th>Price</th>
+                <th><a href="/?sort_by=date">Date</a></th>
+                <th><a href="/?sort_by=name">Offer</a></th>
+                <th><a href="/?sort_by=district">District</a></th>
+                <th><a href="/?sort_by=rooms">Rooms</a></th>
+                <th><a href="/?sort_by=price">Price</a></th>
             </tr>
             {% for item in data %}
-                <tr id="{{ loop.index }}" onclick="update_row(this)">
+                <tr id="{{ item[6] }}" onclick="update_row(this)">
                     <td>{{ item[1] }}</td>
                     <td><a href="{{ item[0] }}">{{ item[2] }}</a></td>
                     <td>{{ item[3] }}</td>
