@@ -7,5 +7,12 @@ class GumTreeFinder(Finder):
         self.subject = 'GumTree Offers: Mieszkania w Warszawie'
         self.log_file = 'found_gumtree.txt'
 
+    def generate_hrefs(self, offers):
+        hrefs = []
+        for href in offers:
+            hrefs.append(self.domain + href)
+        return hrefs
+
+
 if __name__ == "__main__":
     GumTreeFinder('./data/', 'config_gumtree', True, ' ', ' ').run()

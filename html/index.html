@@ -5,6 +5,7 @@
         <h2 class="text-center">{{ title }}</h2>
         <table id="{{ name }}" class="table table-hover">
             <tr>
+                <th>Status</th>
                 <th><a href="/?sort_by=date">Date</a></th>
                 <th><a href="/?sort_by=name">Offer</a></th>
                 <th><a href="/?sort_by=district">District</a></th>
@@ -12,7 +13,8 @@
                 <th><a href="/?sort_by=price">Price</a></th>
             </tr>
             {% for item in data %}
-                <tr id="{{ item[6] }}" onclick="update_row(this)">
+                <tr id="{{ item[6] }}">
+                    <td><a onclick="update_row(this.parentElement.parentElement)">Change</a></td>
                     <td>{{ item[1] }}</td>
                     <td><a href="{{ item[0] }}">{{ item[2] }}</a></td>
                     <td>{{ item[3] }}</td>

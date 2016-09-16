@@ -167,7 +167,7 @@ class Finder(object):
         except:
             pass
         try:
-            rooms = tree.xpath(self.xpath_rooms)[0] # first character
+            rooms = tree.xpath(self.xpath_rooms)[0]  # first character
         except:
             pass
         try:
@@ -186,37 +186,46 @@ class Finder(object):
     def update_remote_log(self, data):
         return
 
-    def process(self):
-        self.tree = etree.parse(urllib2.urlopen(self.url), self.HTML_parser)
-        hrefs = self.tree.xpath(self.offers)
+    def process_offers(self, hrefs):
         content = ''
         idx = -1
         for href in hrefs:
-            full_url = self.domain + href
             idx += 1
-            if full_url in self.processed:
+            if href in self.processed:
                 continue
-            self.processed.insert(idx, full_url)
+            self.processed.insert(idx, href)
             if len(self.processed) >= 100:
                 self.processed.pop()
 
             try:
-                print full_url
-                tree = etree.parse(urllib2.urlopen(full_url), self.HTML_parser)
+                print href
+                tree = etree.parse(urllib2.urlopen(href), self.HTML_parser)
             except urllib2.HTTPError:
                 print "[ERROR] Parsing offer error"
                 continue
-            acc = True
-            print full_url
+            print href
             for rule in self.rules:
                 if not rule.check(tree):
                     acc = False
                     break
             if acc:
                 print "\t[FOUND] Found offer!"
-                self.add_to_log(full_url, tree)
-                content += full_url + '\n\n'
+                self.add_to_log(href, tree)
+                content += href + '\n\n'
         self.send_email(content)
+
+    def generate_hrefs(self, offers):
+        return offers
+
+    def process(self):
+        try:
+            self.tree = etree.parse(urllib2.urlopen(self.url), self.HTML_parser)
+            offers = self.tree.xpath(self.offers)
+            hrefs = self.generate_hrefs(offers)
+            self.process_offers(hrefs)
+        except:
+            print "Error while prcessing offers"
+            traceback.print_exc()
 
     def convert_log(self, f):
         old_log = ''
